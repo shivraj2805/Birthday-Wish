@@ -1,8 +1,11 @@
-name: Deploy Birthday App to EC2
+name: Deploy Birthday App (Client) to EC2
 
 on:
   push:
-    branches: ["master"] 
+    branches: ["master"]
+    paths:
+      - "client/**"
+      - ".github/workflows/deploy-client.yml"  
 
 jobs:
   build-and-deploy:
@@ -17,11 +20,14 @@ jobs:
         with:
           node-version: "22"
           cache: "npm"
+          cache-dependency-path: client/package-lock.json
 
       - name: Install dependencies
+        working-directory: client
         run: npm ci
 
       - name: Build (Vite -> dist/)
+        working-directory: client
         run: npm run build
 
       - name: Ensure rsync + ssh client
@@ -45,7 +51,7 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_DEPLOY_PATH: ${{ secrets.EC2_DEPLOY_PATH }}
         run: |
-          rsync -avz --delete ./dist/ \
+          rsync -avz --delete ./client/dist/ \
             "$EC2_USER@$EC2_HOST:$EC2_DEPLOY_PATH/dist/"
 
       - name: Start/Restart app with PM2 (serve dist on :3000)
@@ -54,11 +60,10 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_DEPLOY_PATH: ${{ secrets.EC2_DEPLOY_PATH }}
         run: |
-          ssh "$EC2_USER@$EC2_HOST" << EOF
+          ssh "$EC2_USER@$EC2_HOST" << 'EOF'
             set -e
             cd "$EC2_DEPLOY_PATH"
 
-            # Ensure Node tooling exists on EC2 (pm2 + serve)
             if ! command -v pm2 >/dev/null 2>&1; then
               sudo npm i -g pm2
             fi
@@ -66,7 +71,6 @@ jobs:
               sudo npm i -g serve
             fi
 
-            # Start or restart static server
             if pm2 list | grep -q "bdayapp"; then
               pm2 restart bdayapp
             else
@@ -74,7 +78,5 @@ jobs:
             fi
 
             pm2 save
-
-            # Reload nginx (ignore if not installed)
             sudo systemctl reload nginx 2>/dev/null || true
           EOF
