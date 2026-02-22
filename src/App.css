@@ -10,7 +10,7 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,7 +86,7 @@
 /* Input Section */
 .title {
   font-size: 2.5rem;
-  color: #667eea;
+  color: #ff6b9d;
   margin-bottom: 1rem;
   animation: pulse 2s ease-in-out infinite;
 }
@@ -101,7 +101,7 @@
   width: 100%;
   padding: 1rem;
   font-size: 1.2rem;
-  border: 2px solid #667eea;
+  border: 2px solid #ff6b9d;
   border-radius: 10px;
   margin-bottom: 1rem;
   outline: none;
@@ -109,15 +109,15 @@
 }
 
 .name-input:focus {
-  border-color: #764ba2;
-  box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+  border-color: #c44569;
+  box-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
 }
 
 .submit-btn {
   width: 100%;
   padding: 1rem 2rem;
   font-size: 1.2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -141,13 +141,13 @@
 
 .wish-title {
   font-size: 2.5rem;
-  color: #667eea;
+  color: #ff6b9d;
   margin-bottom: 1rem;
 }
 
 .wish-name {
   font-size: 3rem;
-  color: #764ba2;
+  color: #c44569;
   margin-bottom: 2rem;
   font-weight: bold;
   text-transform: capitalize;
