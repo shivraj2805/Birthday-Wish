@@ -1,0 +1,228 @@
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.birthday-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Balloons */
+.balloons {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.balloon {
+  position: absolute;
+  font-size: 3rem;
+  animation: float 6s ease-in-out infinite;
+}
+
+.balloon-1 { left: 10%; animation-delay: 0s; }
+.balloon-2 { left: 30%; animation-delay: 1s; }
+.balloon-3 { left: 50%; animation-delay: 2s; }
+.balloon-4 { left: 70%; animation-delay: 1.5s; }
+.balloon-5 { left: 90%; animation-delay: 0.5s; }
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(100vh) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20vh) rotate(10deg);
+  }
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  animation: confetti-fall 3s linear infinite;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+/* Card */
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+
+/* Input Section */
+.title {
+  font-size: 2.5rem;
+  color: #667eea;
+  margin-bottom: 1rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.name-input {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.2rem;
+  border: 2px solid #667eea;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.name-input:focus {
+  border-color: #764ba2;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  font-weight: bold;
+}
+
+.submit-btn:hover {
+  transform: scale(1.05);
+}
+
+.submit-btn:active {
+  transform: scale(0.95);
+}
+
+/* Wish Section */
+.wish-section {
+  animation: fadeIn 0.8s ease-in;
+}
+
+.wish-title {
+  font-size: 2.5rem;
+  color: #667eea;
+  margin-bottom: 1rem;
+}
+
+.wish-name {
+  font-size: 3rem;
+  color: #764ba2;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.wish-message {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 2rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+}
+
+.wish-message p {
+  font-size: 1.1rem;
+  color: #333;
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+.cake {
+  font-size: 5rem;
+  animation: bounce 1s infinite;
+  margin: 1rem 0;
+}
+
+.reset-btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  font-weight: bold;
+}
+
+.reset-btn:hover {
+  transform: scale(1.05);
+}
+
+.reset-btn:active {
+  transform: scale(0.95);
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s ease-in-out infinite;
+}
