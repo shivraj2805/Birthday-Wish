@@ -6,11 +6,13 @@ const {
   createBirthday,
   updateBirthday,
   deleteBirthday,
+  deleteAllBirthdays,
 } = require('../controllers/birthdayController');
 
 router.route('/')
   .get(getBirthdays)
-  .post(createBirthday);
+  .post(createBirthday)
+  .delete(deleteAllBirthdays);
 
 router.route('/:id')
   .get(getBirthday)

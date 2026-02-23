@@ -114,10 +114,28 @@ const deleteBirthday = async (req, res, next) => {
   }
 };
 
+// @desc    Delete all birthday wishes
+// @route   DELETE /api/birthdays
+// @access  Public
+const deleteAllBirthdays = async (req, res, next) => {
+  try {
+    const result = await Birthday.deleteMany({});
+    
+    res.status(200).json({
+      success: true,
+      message: `All birthday wishes deleted successfully. ${result.deletedCount} records removed.`,
+      deletedCount: result.deletedCount,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getBirthdays,
   getBirthday,
   createBirthday,
   updateBirthday,
   deleteBirthday,
+  deleteAllBirthdays,
 };

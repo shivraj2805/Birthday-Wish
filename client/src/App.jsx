@@ -88,6 +88,24 @@ function App() {
     }
   }
 
+  const deleteAllBirthdays = async () => {
+    if (window.confirm('Are you sure you want to delete ALL birthday wishes? This action cannot be undone!')) {
+      try {
+        const response = await fetch('/api/birthdays', {
+          method: 'DELETE',
+        })
+        const data = await response.json()
+        if (data.success) {
+          fetchBirthdays()
+          alert(data.message)
+        }
+      } catch (error) {
+        console.error('Error deleting all birthdays:', error)
+        alert('Failed to delete all birthday wishes')
+      }
+    }
+  }
+
   return (
     <div className="birthday-container">
       {/* Top Right Icon with Count Badge */}
@@ -104,7 +122,14 @@ function App() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>🎉 All Birthday Wishes ({birthdays.length})</h2>
-              <button className="close-btn" onClick={() => setShowModal(false)}>✕</button>
+              <div className="modal-actions">
+                {birthdays.length > 0 && (
+                  <button className="delete-all-btn" onClick={deleteAllBirthdays} title="Delete All">
+                    🗑️ Delete All
+                  </button>
+                )}
+                <button className="close-btn" onClick={() => setShowModal(false)}>✕</button>
+              </div>
             </div>
             <div className="modal-body">
               {birthdays.length === 0 ? (
