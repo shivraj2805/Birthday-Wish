@@ -1,0 +1,74 @@
+name: Deploy Backend to EC2
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - "backend/**"
+      - ".github/workflows/deploy-backend.yml"
+
+jobs:
+  deploy_backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install Backend Dependencies (CI check)
+        working-directory: backend
+        run: npm ci
+
+      - name: Install rsync + ssh client
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y rsync openssh-client
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p ${{ secrets.EC2_PORT }} -H ${{ secrets.EC2_HOST }} 2>/dev/null >> ~/.ssh/known_hosts || true
+
+      - name: Upload Backend to EC2 (keep .env on server)
+        run: |
+          rsync -az --delete \
+            --exclude ".env" \
+            -e "ssh -p ${{ secrets.EC2_PORT }}" \
+            backend/ \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.APP_DIR }}/backend/
+
+      - name: Restart Backend with PM2
+        run: |
+          ssh -p ${{ secrets.EC2_PORT }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
+
+            APP_DIR="${{ secrets.APP_DIR }}"
+            cd "$APP_DIR/backend"
+
+            # Install prod deps on server
+            npm ci --omit=dev || npm install --omit=dev
+
+            # Ensure pm2 exists
+            if ! command -v pm2 >/dev/null 2>&1; then
+              sudo npm i -g pm2
+            fi
+
+            ENTRY="index.js"
+
+            if pm2 list | grep -q "backend"; then
+              pm2 restart backend
+            else
+              pm2 start "$ENTRY" --name backend
+            fi
+
+            pm2 save
+          EOF

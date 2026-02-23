@@ -1,0 +1,481 @@
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.birthday-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Balloons */
+.balloons {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.balloon {
+  position: absolute;
+  font-size: 3rem;
+  animation: float 6s ease-in-out infinite;
+}
+
+.balloon-1 { left: 10%; animation-delay: 0s; }
+.balloon-2 { left: 30%; animation-delay: 1s; }
+.balloon-3 { left: 50%; animation-delay: 2s; }
+.balloon-4 { left: 70%; animation-delay: 1.5s; }
+.balloon-5 { left: 90%; animation-delay: 0.5s; }
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(100vh) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20vh) rotate(10deg);
+  }
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  animation: confetti-fall 3s linear infinite;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+/* Card */
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+
+/* Input Section */
+.title {
+  font-size: 2.5rem;
+  color: #ff6b9d;
+  margin-bottom: 1rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.name-input {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.2rem;
+  border: 2px solid #ff6b9d;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.name-input:focus {
+  border-color: #c44569;
+  box-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
+}
+
+.message-input {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 2px solid #ff6b9d;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: all 0.3s;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.message-input:focus {
+  border-color: #c44569;
+  box-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  font-weight: bold;
+}
+
+.submit-btn:hover {
+  transform: scale(1.05);
+}
+
+.submit-btn:active {
+  transform: scale(0.95);
+}
+
+/* Wish Section */
+.wish-section {
+  animation: fadeIn 0.8s ease-in;
+}
+
+.wish-title {
+  font-size: 2.5rem;
+  color: #ff6b9d;
+  margin-bottom: 1rem;
+}
+
+.wish-name {
+  font-size: 3rem;
+  color: #c44569;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.wish-message {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 2rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+}
+
+.wish-message p {
+  font-size: 1.1rem;
+  color: #333;
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+.cake {
+  font-size: 5rem;
+  animation: bounce 1s infinite;
+  margin: 1rem 0;
+}
+
+.reset-btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  font-weight: bold;
+}
+
+.reset-btn:hover {
+  transform: scale(1.05);
+}
+
+.reset-btn:active {
+  transform: scale(0.95);
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s ease-in-out infinite;
+}
+
+/* Birthday Icon (Top Right) */
+.birthday-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: transform 0.3s;
+}
+
+.birthday-icon:hover {
+  transform: scale(1.1);
+}
+
+.birthday-icon .icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.birthday-icon .badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #f5576c;
+  color: white;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 2px solid #ffecd2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+  color: white;
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.modal-body {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.empty-message {
+  text-align: center;
+  color: #999;
+  font-size: 1.1rem;
+  padding: 2rem;
+}
+
+.birthday-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.birthday-item {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 1.5rem;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.birthday-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.birthday-info {
+  flex: 1;
+}
+
+.birthday-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #c44569;
+  font-size: 1.4rem;
+  text-transform: capitalize;
+}
+
+.birth-date {
+  color: #666;
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.birthday-message {
+  color: #333;
+  margin: 0.5rem 0 0 0;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.delete-btn {
+  background: rgba(245, 87, 108, 0.2);
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  margin-left: 1rem;
+}
+
+.delete-btn:hover {
+  background: rgba(245, 87, 108, 0.4);
+  transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .birthday-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .birthday-icon .icon {
+    font-size: 1.5rem;
+  }
+  
+  .birthday-icon .badge {
+    width: 20px;
+    height: 20px;
+    font-size: 0.65rem;
+  }
+  
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .birthday-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .delete-btn {
+    align-self: flex-end;
+    margin: 0.5rem 0 0 0;
+  }
+}
+
