@@ -1,14 +1,14 @@
-name: Deploy Backend to EC2
+name: Deploy backend to EC2
 
 on:
   push:
     branches: ["master"]
     paths:
-      - "backend/**"
+      - "server/**"
       - ".github/workflows/deploy-backend.yml"
 
 jobs:
-  deploy_backend:
+  deploy_server:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,10 +20,10 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
-          cache-dependency-path: backend/package-lock.json
+          cache-dependency-path: server/package-lock.json
 
-      - name: Install Backend Dependencies (CI check)
-        working-directory: backend
+      - name: Install server dependencies (CI check)
+        working-directory: server
         run: npm ci
 
       - name: Install rsync + ssh client
@@ -36,25 +36,37 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p ${{ secrets.EC2_PORT }} -H ${{ secrets.EC2_HOST }} 2>/dev/null >> ~/.ssh/known_hosts || true
+          ssh-keyscan -p "${{ secrets.EC2_PORT }}" -H "${{ secrets.EC2_HOST }}" 2>/dev/null >> ~/.ssh/known_hosts || true
 
-      - name: Upload Backend to EC2 (keep .env on server)
+      - name: Upload server to EC2
         run: |
           rsync -az --delete \
-            --exclude ".env" \
             -e "ssh -p ${{ secrets.EC2_PORT }}" \
-            backend/ \
-            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.APP_DIR }}/backend/
+            server/ \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.APP_DIR }}/server/
 
-      - name: Restart Backend with PM2
+      - name: Create server .env from GitHub Secrets
         run: |
           ssh -p ${{ secrets.EC2_PORT }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             set -e
+            cd "${{ secrets.APP_DIR }}/server"
 
-            APP_DIR="${{ secrets.APP_DIR }}"
-            cd "$APP_DIR/backend"
+            cat > .env << EOL
+            PORT=${{ secrets.PORT }}
+            MONGODB_URI=${{ secrets.MONGODB_URI }}
+            NODE_ENV=${{ secrets.NODE_ENV }}
+            EOL
 
-            # Install prod deps on server
+            chmod 600 .env
+          EOF
+
+      - name: Restart server with PM2
+        run: |
+          ssh -p ${{ secrets.EC2_PORT }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
+            cd "${{ secrets.APP_DIR }}/server"
+
+            # Install production dependencies on server
             npm ci --omit=dev || npm install --omit=dev
 
             # Ensure pm2 exists
@@ -62,12 +74,11 @@ jobs:
               sudo npm i -g pm2
             fi
 
-            ENTRY="index.js"
-
-            if pm2 list | grep -q "backend"; then
-              pm2 restart backend
+            # Start or restart
+            if pm2 describe server >/dev/null 2>&1; then
+              pm2 restart server
             else
-              pm2 start "$ENTRY" --name backend
+              pm2 start index.js --name server
             fi
 
             pm2 save
