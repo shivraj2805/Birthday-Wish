@@ -165,7 +165,7 @@ function App() {
       <div className="card">
         {!showWish ? (
           <div className="input-section">
-            <h1 className="title">🎂 Birthday Wishes 🎂</h1>
+            <h1 className="title">🎂Enter Birthday Wishes 🎂</h1>
             <p className="subtitle">Enter details to send birthday wishes!</p>
             <form onSubmit={handleSubmit}>
               <input
