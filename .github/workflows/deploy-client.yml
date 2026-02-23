@@ -71,7 +71,7 @@ jobs:
             if pm2 list | grep -q "bdayapp"; then
               pm2 restart bdayapp
             else
-              pm2 start serve --name "bdayapp" -- -s dist -l 3000
+              pm2 start serve --name "client" -- -s dist -l 3000
             fi
 
             pm2 save
